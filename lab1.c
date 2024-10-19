@@ -4,41 +4,6 @@
 #include <math.h>
 #define A 9;
 #define e 2.718281
-// LI TAO
-//print
-void printArray(double M1[], double M2[], int N) {
-    printf(" M1 :");
-    for (int i = 0; i < N; i++) {
-        printf("%lf ", M1[i]);
-    }
-    printf(" M2 :");
-    for (int i = 0; i < N; i++) {
-        printf("%lf ", M2[i]);
-    }
-    printf("\n");
-}
-//Map M1
-
-
-//MAP M2  
-double factorial(double x) { //zkw验证
-    double result = 1;
-    while (x != 1) {
-        result *= x;
-        x--;
-    }
-    return result;
-}
-
-double calculateSinSum(double arr[], int size) {
-    double sinSum = 0.0;
-    for (int i = 0; i < size; i++) {
-        if ((int)(arr[i] / arr[0]) % 2 == 0) {
-            sinSum += sin(arr[i]);
-        }
-    }
-    return sinSum;
-}
 
 //heapSort
 void swap(double* a, double* b) {
@@ -87,7 +52,7 @@ int main(int argc, char* argv[])
     {
         srand(i); /* initialize the initial value of the RNG */
         double* M1 = (double*)malloc(N * sizeof(double));
-        double* M2 = (double*)malloc((N / 2) * sizeof(double));
+        double* M2 = (double*)malloc((N/2) * sizeof(double));
         // double M1[] = {8.2,4.233,5.21,1.22,2356,7.22,1.212};
         // double M2[] = {2.11,2.45,5.22};
 
@@ -99,7 +64,7 @@ int main(int argc, char* argv[])
             M1[i] = (rand_r(&seed) % 10) + 1 + rd;
             printf("%lf ", M1[i]);
         }
-        printf("\n");
+
         // init M2
         // [min , max -1]
         for (int i = 0; i < N / 2; i++) {
@@ -107,9 +72,8 @@ int main(int argc, char* argv[])
             int min = A;
             double rd = (double)(rand_r(&seed) % 101) / 101;
             M2[i] = (double)((rand() % ((max + 1) - min + 1)) + min) + rd;
-            printf("%lf ", M2[i]);
+
         }
-        printf("\n");
 
         // 2.MAP STAGE
         //	tanh
@@ -118,7 +82,7 @@ int main(int argc, char* argv[])
         }
 
         //	copy M2 and add
-        double* M2_copy = (double*)malloc((N / 2) * sizeof(double));
+        double* M2_copy = (double*)malloc((N/2) * sizeof(double));
         for (int i = 0; i < N / 2; i++) {
             M2_copy[i] = M2[i];
         }
@@ -136,18 +100,18 @@ int main(int argc, char* argv[])
         for (int i = 0; i < N / 2; i++) {
             M2[i] = fmax(M1[i], M2[i]);
         }
-
+        
         // 4.Sort Stage
-        heapSort(M2, N / 2);
-
+        heapSort(M2, N/2);
+        
         // 5.Reduce Stage
-        //	sin and get sum
-        int res_sum = 0;
+        //	calculate sin and get sum
+        int res_sum =0 ;
         for (int i = 1; i < N / 2; i++) {
             M2[i] /= M2[0];
-            if ((int)M2[i] % 2) {
-                res_sum += sin(M2[i]);
-            }
+            if((int)M2[i] % 2){
+				res_sum += sin(M2[i]);
+			}	
         }
         M2[0] = 1;
     }
