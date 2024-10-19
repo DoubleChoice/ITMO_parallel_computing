@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <math.h>
-#define A 9;
-#define e 2.718281
 
 //heapSort
 void swap(double* a, double* b) {
@@ -42,6 +40,7 @@ void heapSort(double arr[], int n) {
 //A = 9
 int main(int argc, char* argv[])
 {
+	const int A = 9;
     int i, N;
     unsigned int seed;
     struct timeval T1, T2;
@@ -52,27 +51,34 @@ int main(int argc, char* argv[])
     {
         srand(i); /* initialize the initial value of the RNG */
         double* M1 = (double*)malloc(N * sizeof(double));
-        double* M2 = (double*)malloc((N/2) * sizeof(double));
+        double* M2 = (double*)malloc((N / 2) * sizeof(double));
         // double M1[] = {8.2,4.233,5.21,1.22,2356,7.22,1.212};
         // double M2[] = {2.11,2.45,5.22};
 
         // 1.Generate Stage
 
         // init M1
+        // [min  , max - 1]
         for (int i = 0; i < N; i++) {
+            int max = A;
+            int min = 1;
+            min++;
             double rd = (double)(rand_r(&seed) % 101) / 101;
-            M1[i] = (rand_r(&seed) % 10) + 1 + rd;
-            printf("%lf ", M1[i]);
+            M1[i] = (double)((rand_r(&seed) % (max - min + 1)) + min) - 1 + rd;
+            //if(M1[i] < 1 || M1[i] > A)
+            //	printf("%lf\n", M1[i]);
         }
 
         // init M2
-        // [min , max -1]
+        // [min  , max - 1]
         for (int i = 0; i < N / 2; i++) {
             int max = 10 * A;
             int min = A;
+            min ++;
             double rd = (double)(rand_r(&seed) % 101) / 101;
-            M2[i] = (double)((rand() % ((max + 1) - min + 1)) + min) + rd;
-
+            M2[i] = (double)((rand_r(&seed) % (max - min + 1)) + min) - 1 + rd;
+            //if(M2[i] < A || M2[i] > 10 * A)
+            //	printf("%lf\n", M2[i]);
         }
 
         // 2.MAP STAGE
@@ -82,7 +88,7 @@ int main(int argc, char* argv[])
         }
 
         //	copy M2 and add
-        double* M2_copy = (double*)malloc((N/2) * sizeof(double));
+        double* M2_copy = (double*)malloc((N / 2) * sizeof(double));
         for (int i = 0; i < N / 2; i++) {
             M2_copy[i] = M2[i];
         }
@@ -100,18 +106,18 @@ int main(int argc, char* argv[])
         for (int i = 0; i < N / 2; i++) {
             M2[i] = fmax(M1[i], M2[i]);
         }
-        
+
         // 4.Sort Stage
-        heapSort(M2, N/2);
-        
+        heapSort(M2, N / 2);
+
         // 5.Reduce Stage
         //	calculate sin and get sum
-        int res_sum =0 ;
+        int res_sum = 0;
         for (int i = 1; i < N / 2; i++) {
             M2[i] /= M2[0];
-            if((int)M2[i] % 2){
-				res_sum += sin(M2[i]);
-			}	
+            if ((int)M2[i] % 2) {
+                res_sum += sin(M2[i]);
+            }
         }
         M2[0] = 1;
     }
