@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 {
     const int A = 9;
     int i, N;
-    unsigned int seed;
+    unsigned int seed = 1;
     struct timeval T1, T2;
     long delta_ms;
     N = atoi(argv[1]); /* N equals the first command-line parameter */
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         for (int i = 0; i < N / 2; i++) {
             int max = 10 * A;
             int min = A;
-            min++;
+            min ++;
             double rd = (double)(rand_r(&seed) % 101) / 101;
             M2[i] = (double)((rand_r(&seed) % (max - min + 1)) + min) - 1 + rd;
             //if(M2[i] < A || M2[i] > 10 * A)
@@ -114,19 +114,19 @@ int main(int argc, char* argv[])
         //	calculate sin and get sum
         double min = 0;
         for (int i = 0; i < N / 2; i++) {
-            if (M2[i]) {
+            if(M2[i]){
                 min = M2[i];
                 break;
             }
         }
         double res_sum = 0;
-        for (int i = 0; i < N / 2; i++) {
+        for (int i = 0; i < N / 2; i++){
             double temp = M2[i] / min;
-            if (!((int)temp % 2))
+            if(!((int)temp % 2))
                 res_sum += sin(M2[i]);
         }
-        printf("..........res_sum:%lf\n", res_sum);
-
+        printf("..........res_sum:%lf\n",res_sum);
+		
     }
     gettimeofday(&T2, NULL); /* remember the current time T2 */
     delta_ms = 1000 * (T2.tv_sec - T1.tv_sec) + (T2.tv_usec - T1.tv_usec) / 1000;
